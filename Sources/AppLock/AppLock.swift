@@ -113,7 +113,6 @@ public struct AppLockView: View {
     
     private func onChange(_ value: String) {
         if pin.count == rightPin.count {
-            pin = ""
             if pin == rightPin {
                 completion(.success(true))
             } else {
@@ -129,6 +128,7 @@ public struct AppLockView: View {
                     }
                 }
             }
+            pin = ""
         }
     }
     
