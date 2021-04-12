@@ -1,10 +1,13 @@
-import AVFoundation
 import SwiftUI
 
 
 // Should have ability to check code for you and show alert
 // Shoul haqve ability to only return when a pin count has reached
-struct AppLockView: View {
+
+/// A SwiftUI view that provides a user interface for writing `CodePin`.
+/// To use,  set `completion` to
+/// a closure that will be called when the number of pin digits is reached.  This will send the string that was detected or a `UnlockingError`.
+public struct AppLockView: View {
     public enum UnlockingError: Error {
         case badPin, unknownError
     }
@@ -18,7 +21,7 @@ struct AppLockView: View {
     private let pinCount = 4
     private let buttons: [String] = [ "1","2","3","4","5","6","7","8","9","","0","X"]
     
-    var body: some View {
+    public var body: some View {
         ZStack(alignment: .top) {
             VStack {
                 VStack(spacing: 20) {
@@ -129,7 +132,7 @@ struct AppLockView: View {
 }
 
 extension AppLockView {
-    struct ErrorView: View {
+    private struct ErrorView: View {
         @Binding public var isShown: Bool
         @State var loadingProgress: CGFloat = 1.0
         @State private var offset = CGSize.zero
@@ -203,19 +206,3 @@ struct AppLockView_Previews: PreviewProvider {
         })
     }
 }
-
-
-/// A SwiftUI view that is able to scan barcodes, QR codes, and more, and send back what was found.
-/// To use, set `codeTypes` to be an array of things to scan for, e.g. `[.qr]`, and set `completion` to
-/// a closure that will be called when scanning has finished. This will be sent the string that was detected or a `ScanError`.
-/// For testing inside the simulator, set the `simulatedData` property to some test data you want to send back.
-
-//public struct CodeScannerView: UIViewControllerRepresentable
-//
-//struct CodeScannerView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CodeScannerView(codeTypes: [.qr]) { result in
-//            // do nothing
-//        }
-//    }
-//}
