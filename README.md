@@ -4,7 +4,7 @@ A description of this package.
 
 <p>
     <img src="https://img.shields.io/badge/iOS-14.0+-blue.svg" />
-    <img src="https://img.shields.io/badge/Swift-5.1-red.svg" />
+    <img src="https://img.shields.io/badge/Swift-5.3-red.svg" />
     <a href="https://twitter.com/cedricbahirwe">
         <img src="https://img.shields.io/badge/Contact-@cedricbahirwe-lightgrey.svg?style=flat" alt="Twitter: @cedricbahirwe" />
     </a>

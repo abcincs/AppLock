@@ -23,7 +23,13 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "AppLock",
-            dependencies: []),
+            dependencies: []
+//            resources: [
+//                  .process("Resources/config.json"),
+//                  .copy("Resources/HTML")
+//                ]
+        ),
+        
         .testTarget(
             name: "AppLockTests",
             dependencies: ["AppLock"]),
