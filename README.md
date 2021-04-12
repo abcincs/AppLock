@@ -25,9 +25,9 @@ You should create an instance of `AppLockView` with three parameters: the pin to
 Here's some example code to create an AppLock view that prints when the pin matched code.
 
 ```swift
-AppLockView(rightPin: "1975", completion: { result in result in                    
+AppLockView(rightPin: "1975") { result  in
     switch result {
-    case .success(let _):
+    case .success(_):
         print("Match pin code")
     case .failure(let error):
         print(error.localizedDescription)

@@ -16,10 +16,10 @@ public struct AppLockView: View {
     /// Show A pop Up Display an error message
     public var completion: (Result<Bool, UnlockError>) -> Void
 
-    @State private var pin: String = ""
-    @State private var showErrorView: Bool = false
-    private let pinCount = 4
-    private let buttons: [String] = [ "1","2","3","4","5","6","7","8","9","","0","X"]
+    @State var pin: String = ""
+    @State var showErrorView: Bool = false
+    let pinCount = 4
+    let buttons: [String] = [ "1","2","3","4","5","6","7","8","9","","0","X"]
     
     public var body: some View {
         ZStack(alignment: .top) {
@@ -201,9 +201,9 @@ extension AppLockView {
 
 struct AppLockView_Previews: PreviewProvider {
     static var previews: some View {
-        AppLockView(rightPin: "1975", completion: { result in
+        AppLockView(rightPin: "1975") { result in
             // do nothing
-        })
+        }
     }
 }
 
