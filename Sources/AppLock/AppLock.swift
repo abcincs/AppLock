@@ -11,15 +11,21 @@ public struct AppLockView: View {
     public enum UnlockError: Error {
         case badPin
     }
-    public var enableErrorDisplay: Bool = true
-    public var rightPin: String
+    public let enableErrorDisplay: Bool
+    public let rightPin: String
     /// Show A pop Up Display an error message
     public var completion: (Result<Bool, UnlockError>) -> Void
 
-    @State var pin: String = ""
-    @State var showErrorView: Bool = false
-    let pinCount = 4
-    let buttons: [String] = [ "1","2","3","4","5","6","7","8","9","","0","X"]
+    @State internal var pin: String = ""
+    @State internal var showErrorView: Bool = false
+    
+    private let buttons: [String] = [ "1","2","3","4","5","6","7","8","9","","0","X"]
+    
+    public init(enableErrorDisplay: Bool = true, rightPin: String, completion:  @escaping (Result<Bool, UnlockError>) -> Void) {
+        self.enableErrorDisplay = enableErrorDisplay
+        self.rightPin = rightPin
+        self.completion = completion
+    }
     
     public var body: some View {
         ZStack(alignment: .top) {
@@ -35,7 +41,7 @@ public struct AppLockView: View {
                     Text("Enter PIN")
                         .font(Font.callout.weight(.medium))
                     HStack(spacing: 20) {
-                        ForEach(0..<pinCount) { i in
+                        ForEach(0..<rightPin.count) { i in
                             Image(systemName: "circle.fill")
                                 .resizable()
                                 .frame(width: 8, height: 8)
