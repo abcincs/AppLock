@@ -1,20 +1,20 @@
 import SwiftUI
 
-
+// MARK: Upcoming features:
 // Should have ability to check code for you and show alert
-// Shoul haqve ability to only return when a pin count has reached
+// Should have ability to only return when a pin count has reached
 
 /// A SwiftUI view that provides a user interface for writing `CodePin`.
 /// To use,  set `completion` to
 /// a closure that will be called when the number of pin digits is reached.  This will send the string that was detected or a `UnlockingError`.
 public struct AppLockView: View {
-    public enum UnlockingError: Error {
-        case badPin, unknownError
+    public enum UnlockError: Error {
+        case badPin
     }
     public var enableErrorDisplay: Bool = true
     public var rightPin: String
     /// Show A pop Up Display an error message
-    public var completion: (Result<Bool, UnlockingError>) -> Void
+    public var completion: (Result<Bool, UnlockError>) -> Void
 
     @State private var pin: String = ""
     @State private var showErrorView: Bool = false
@@ -206,3 +206,4 @@ struct AppLockView_Previews: PreviewProvider {
         })
     }
 }
+
