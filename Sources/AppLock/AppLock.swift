@@ -14,7 +14,7 @@ public struct AppLockView: View {
     /// Show A pop Up Display an error message
     public var completion: (Result<Bool, UnlockError>) -> Void
 
-    @State private var pin: String = "3"
+    @State private var pin: String = ""
     @State private var showErrorView: Bool = false
     
     private let buttons: [String] = [ "1","2","3","4","5","6","7","8","9"," ","0","X"]
