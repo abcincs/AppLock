@@ -14,7 +14,7 @@ public struct AppLockView: View {
     /// Show A pop Up Display an error message
     public var completion: (Result<Bool, UnlockError>) -> Void
 
-    @State private var pin: String = ""
+    @State private var pin: String = "3"
     @State private var showErrorView: Bool = false
     
     private let buttons: [String] = [ "1","2","3","4","5","6","7","8","9"," ","0","X"]
@@ -75,16 +75,19 @@ public struct AppLockView: View {
                             }
                             impact(style: .rigid)
                         } label: {
-                            if button == "X" {
-                                Image(systemName: "delete.left")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 26, height: 25)
-                                    .opacity(pin.isEmpty ? 0 : 1)
-                            } else {
-                                Text(button)
-                                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                            Group {
+                                if button == "X" {
+                                    Image(systemName: "delete.left")
+                                        .resizable()
+                                        .frame(width: 22, height: 17)
+                                        .opacity(pin.isEmpty ? 0 : 1)
+                                } else {
+                                    Text(button)
+                                        .font(.system(size: 22, weight: .bold, design: .rounded))
+                                    
+                                }
                             }
+                            .padding(10)
                         }
                         .frame(width: 60, height: 60)
                         .foregroundColor(
@@ -115,6 +118,7 @@ public struct AppLockView: View {
         if pin.count == rightPin.count {
             if pin == rightPin {
                 completion(.success(true))
+                showErrorView = false
             } else {
                 completion(.failure(.badPin))
                 if enableErrorDisplay {
