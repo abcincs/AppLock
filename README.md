@@ -37,11 +37,11 @@ AppLockView(rightPin: "1975", completion: { result in result in
 
 Your completion closure is probably where you want to dismiss the `AppLockView`.
 
-Here's an example on how to present the QR code-scanning view as a sheet and how the scanned barcode can be passed to the next view in a NavigationView:
+Here's an example on how to present the AppLockview as a sheet and how we can pass to the next view in a NavigationView when code matches:
 
 ```swift
 struct AppLockExampleView: View {
-    @State var isPresentingScanner = false
+    @State var isPresentingLocker = false
     @State var matchedCode: Bool = false
 
     var body: some View {
@@ -51,10 +51,10 @@ struct AppLockExampleView: View {
                     NavigationLink("Next page", destination: NextView(), isActive: .constant(true)).hidden()
                 }
                 Button("Unlock App") {
-                    self.isPresentingScanner = true
+                    self.isPresentingLocker = true
                 }
-                .sheet(isPresented: $isPresentingScanner) {
-                    self.scannerSheet
+                .sheet(isPresented: $isPresentingLocker) {
+                    self.appLockSheet
                 }
                 Text("Unlock the app to begin")
             }
@@ -62,13 +62,13 @@ struct AppLockExampleView: View {
         }
     }
 
-    var scannerSheet : some View {
+    var appLockSheet : some View {
         AppLockView(
             rightPin: "2021",
             completion: { result in
                 if case .success(_) = result {
                     self.matchedCode = true
-                    self.isPresentingScanner = false
+                    self.isPresentingLocker = false
                 }
             }
         )
