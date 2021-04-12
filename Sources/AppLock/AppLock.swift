@@ -1,9 +1,5 @@
 import SwiftUI
 
-// MARK: Upcoming features:
-// Should have ability to check code for you and show alert
-// Should have ability to only return when a pin count has reached
-
 /// A SwiftUI view that provides a user interface for writing `CodePin`.
 /// To use,  set `completion` to
 /// a closure that will be called when the number of pin digits is reached.  This will send the string that was detected or a `UnlockingError`.
@@ -11,18 +7,23 @@ public struct AppLockView: View {
     public enum UnlockError: Error {
         case badPin
     }
+    /// Indicates whether of not the `ErrorView` should be shown
     public let enableErrorDisplay: Bool
+    /// The code to be matched against
     public let rightPin: String
     /// Show A pop Up Display an error message
     public var completion: (Result<Bool, UnlockError>) -> Void
 
-    @State internal var pin: String = ""
-    @State internal var showErrorView: Bool = false
+    @State private var pin: String = ""
+    @State private var showErrorView: Bool = false
     
-    private let buttons: [String] = [ "1","2","3","4","5","6","7","8","9","","0","X"]
+    private let buttons: [String] = [ "1","2","3","4","5","6","7","8","9"," ","0","X"]
     
     public init(enableErrorDisplay: Bool = true, rightPin: String, completion:  @escaping (Result<Bool, UnlockError>) -> Void) {
         self.enableErrorDisplay = enableErrorDisplay
+        if rightPin.count > 6 {
+            fatalError("Can not create Pin Code with more than 6 digits")
+        }
         self.rightPin = rightPin
         self.completion = completion
     }
@@ -33,7 +34,7 @@ public struct AppLockView: View {
                 VStack(spacing: 20) {
                     Image(uiImage: fingerPrint)
                         .resizable()
-                        .renderingMode(.original)
+                        .renderingMode(.template)
                         .frame(width: 50, height: 50)
 
                     Text("App Locked")
@@ -54,6 +55,7 @@ public struct AppLockView: View {
 
                     Button("Forgot?", action: {})
                         .font(.caption)
+                        .hidden()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(.top, 100)
@@ -71,12 +73,14 @@ public struct AppLockView: View {
                             } else {
                                 pin.append(button)
                             }
+                            impact(style: .rigid)
                         } label: {
                             if button == "X" {
-                                Image(uiImage: fingerPrint)
+                                Image(systemName: "delete.left")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 26, height: 25)
+                                    .opacity(pin.isEmpty ? 0 : 1)
                             } else {
                                 Text(button)
                                     .font(.system(size: 22, weight: .bold, design: .rounded))
@@ -99,10 +103,12 @@ public struct AppLockView: View {
             
             if enableErrorDisplay {
                 ErrorView(isShown: $showErrorView)
-                    .offset(y: showErrorView ? 0 : -120)
+                    .offset(y: showErrorView ? 15 : -120)
                     .opacity(showErrorView ? 1 : 0)
             }
         }
+        .background(Color(.systemBackground).ignoresSafeArea())
+        
     }
     
     private func onChange(_ value: String) {
@@ -113,6 +119,8 @@ public struct AppLockView: View {
             } else {
                 completion(.failure(.badPin))
                 if enableErrorDisplay {
+                    
+                    impact(style: .rigid)
                     withAnimation(.interactiveSpring()) {
                         showErrorView = true
                         DispatchQueue.main.asyncAfter(deadline: .now()+5.5) {
@@ -124,15 +132,13 @@ public struct AppLockView: View {
         }
     }
     
-    private class ImageBundle {}
-    
-    private var fingerPrint: UIImage {
-        let image = UIImage(
-            named: "fingerprint",
-            in: Bundle(for: ImageBundle.self),
-            compatibleWith: nil
-        )
+    public var fingerPrint: UIImage {
+        let image = UIImage(named: "fingerprint", in: .module, compatibleWith: nil)
         return image ?? UIImage(systemName: "lock.shield.fill")!
+    }
+    
+    private func impact(style: UIImpactFeedbackGenerator.FeedbackStyle) {
+        UIImpactFeedbackGenerator(style: style).impactOccurred()
     }
     
 }
@@ -172,9 +178,9 @@ extension AppLockView {
             }
             .background(Color(.systemBackground))
             .cornerRadius(3)
-            .shadow(radius: 0.5)
+            .shadow(color: .primary, radius: 0.5)
             .offset(y: offset.height)
-            .padding(.horizontal)
+            .padding()
             .animation(.interactiveSpring())
             .gesture(
                 DragGesture()
@@ -210,6 +216,6 @@ struct AppLockView_Previews: PreviewProvider {
         AppLockView(rightPin: "1975") { result in
             // do nothing
         }
+        
     }
 }
-
