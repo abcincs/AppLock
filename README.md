@@ -1,7 +1,5 @@
 # AppLock
 
-A description of this package.
-
 <p>
     <img src="https://img.shields.io/badge/iOS-14.0+-blue.svg" />
     <img src="https://img.shields.io/badge/Swift-5.3-red.svg" />
