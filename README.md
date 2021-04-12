@@ -36,7 +36,7 @@ AppLockView(rightPin: "1975") { result  in
 
 Your completion closure is probably where you want to dismiss the `AppLockView`.
 
-Here's an example on how to present the AppLockview as a sheet and how we can pass to the next view in a NavigationView when code matches:
+Here's an example on how to present the AppLockview as a sheet and how we can pass to the next view in a NavigationView when pin code has matched:
 
 ```swift
 struct AppLockExampleView: View {
