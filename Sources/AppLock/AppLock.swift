@@ -4,15 +4,25 @@ import SwiftUI
 /// To use,  set `completion` to
 /// a closure that will be called when the number of pin digits is reached.  This will send the string that was detected or a `UnlockingError`.
 public struct AppLockView: View {
-    public enum UnlockError: Error {
+    public enum UnlockError: String, Error {
         case badPin
+        case invalidPin = "Invalid PIN, the PIN may be betweed 4 to 6 digit"
+    }
+    public struct PinCode: Equatable {
+        init(_ value: String) { self.value = value }
+        init(_ value: Int) {  self.value = String(value)  }
+        
+        let value: String
+        
+        var isValid: Bool { (4...6).contains(value.count) }
+        
     }
     /// String displayed at the top, can be tht app/service name
     public let title: LocalizedStringKey
     /// Indicates whether of not the `ErrorView` should be shown
     private let enableErrorDisplay: Bool
     /// The code to be matched against should between (4 to 6 digits)
-    public let correctPin: String
+    public let correctPin: PinCode
     
     /// The primary color to be used for the View
     public let primaryColor: Color
@@ -26,29 +36,31 @@ public struct AppLockView: View {
     
     private let buttons: [String] = [ "1","2","3","4","5","6","7","8","9"," ","0","X"]
     
-    
-    public init(title: LocalizedStringKey = "AppLock", enableErrorDisplay: Bool = false, rightPin: String, completion:  @escaping (Result<Bool, UnlockError>) -> Void) {
-        guard (4...6).contains(rightPin.count) else {
-            fatalError("Can not create Pin Code with more than 6 digits")
-        }
+    public init(title: LocalizedStringKey = "AppLock",
+                color: Color = .primary,
+                enableErrorDisplay: Bool = false,
+                pincode: PinCode,
+                completion:  @escaping (Result<Bool, UnlockError>) -> Void) {
+        
+        guard pincode.isValid else { fatalError(UnlockError.invalidPin.localizedDescription) }
+        
         self.enableErrorDisplay = enableErrorDisplay
         self.title = title
-        self.correctPin = rightPin
-        self.primaryColor = .primary
+        self.correctPin = pincode
+        self.primaryColor = color
         self.completion = completion
     }
     
-    public init(title: LocalizedStringKey = "AppLock", color: Color, enableErrorDisplay: Bool = false, rightPin: String, completion:  @escaping (Result<Bool, UnlockError>) -> Void) {
-        guard (4...6).contains(rightPin.count) else {
-            fatalError("Can not create Pin Code with more than 6 digits")
-        }
-        
-        self.enableErrorDisplay = enableErrorDisplay
-        
-        self.title = title
-        self.correctPin = rightPin
-        self.primaryColor = color
-        self.completion = completion
+    @available(*, deprecated, message: "Use `init(title:enableErrorDisplay:pincode:completion:)` instead")
+    public init(title: LocalizedStringKey = "AppLock",
+                enableErrorDisplay: Bool = false,
+                rightPin: String,
+                completion:  @escaping (Result<Bool, UnlockError>) -> Void) {
+        self.init(title: title,
+                  color: .primary,
+                  enableErrorDisplay: enableErrorDisplay,
+                  pincode: PinCode(rightPin),
+                  completion: completion)
     }
     
     public var body: some View {
@@ -65,7 +77,7 @@ public struct AppLockView: View {
                     Text("Enter PIN")
                         .font(Font.callout.weight(.semibold))
                     HStack(spacing: 20) {
-                        ForEach(0..<correctPin.count) { i in
+                        ForEach(0..<correctPin.value.count) { i in
                             ZStack {
                                 if !(i < enteredPin.count) {
                                     Rectangle()
@@ -142,7 +154,7 @@ public struct AppLockView: View {
                 .padding(.bottom, 60)
 
             }
-            .opacity(correctPin == enteredPin ? 0 : 1)
+            .opacity(correctPin.value == enteredPin ? 0 : 1)
             .onChange(of: enteredPin, perform: onChange)
             
             if enableErrorDisplay {
@@ -156,8 +168,8 @@ public struct AppLockView: View {
     }
     
     private func onChange(_ value: String) {
-        if enteredPin.count == correctPin.count {
-            if enteredPin == correctPin {
+        if enteredPin.count == correctPin.value.count {
+            if enteredPin == correctPin.value {
                 completion(.success(true))
                 showErrorView = false
             } else {
@@ -266,10 +278,10 @@ extension AppLockView {
 
 struct AppLockView_Previews: PreviewProvider {
     static var previews: some View {
-        AppLockView(color: .blue, rightPin: "22992") { result in
-//             do nothing
+        AppLockView(color: Color.blue, pincode: AppLockView.PinCode("22992")) { result in
+            //             do nothing
         }
-//        .preferredColorScheme(.dark)
+        //        .preferredColorScheme(.dark)
         
     }
 }
