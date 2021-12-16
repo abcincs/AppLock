@@ -2,18 +2,37 @@ import XCTest
 @testable import AppLock
 
 final class AppLockTests: XCTestCase {
-    let view = AppLockView(rightPin: "1975", completion: { result in })
-    func testExample() {
+    let oldView = AppLockView(rightPin: "1975", completion: { result in })
+    let newView = AppLockView(pincode: AppLockView.PinCode(1975)) { result in }
+    
+    func testView() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertNotEqual(view.fingerPrint, UIImage(systemName: "lock.shield.fill"))
-        XCTAssert(view.correctPin == AppLockView.PinCode("1975"))
+        XCTAssertNotEqual(oldView.fingerPrint, UIImage(systemName: "lock.shield.fill"))
+        XCTAssert(oldView.correctPin == AppLockView.PinCode("1975"))
         
+        // New View
+        XCTAssertNotEqual(newView.fingerPrint, UIImage(systemName: "lock.shield.fill"))
+        XCTAssert(newView.correctPin == AppLockView.PinCode("1975"))
         
     }
-//
+    
+    func testPins() {
+        XCTAssert(AppLockView.PinCode(20).isValid == false)
+        
+        XCTAssert(AppLockView.PinCode(123456).isValid == true)
+        
+        XCTAssert(AppLockView.PinCode("123456").isValid == true)
+        
+        XCTAssert(AppLockView.PinCode("1234567").isValid == false)
+        
+        XCTAssert(AppLockView.PinCode(1234567).isValid == false)
+    }
+
+    
     static var allTests = [
-        ("testExample", testExample),
+        ("testView", testView),
+        ("testPins", testPins),
     ]
 }
