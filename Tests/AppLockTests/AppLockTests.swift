@@ -8,7 +8,7 @@ final class AppLockTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
         XCTAssertNotEqual(view.fingerPrint, UIImage(systemName: "lock.shield.fill"))
-        XCTAssert(view.rightPin == "1975")
+        XCTAssert(view.correctPin == "1975")
         
         
     }
