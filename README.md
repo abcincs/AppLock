@@ -1,11 +1,12 @@
 # AppLock
 <p align="center" >
-  <img src="https://github.com/ABCIncs/AppLock/blob/main/applock.logo.jpeg" title="AppLock logo" float=left>
+  <img src="https://github.com/ABCIncs/AppLock/blob/main/main.logo.png" title="AppLock logo" float=left>
 </p>
 
 <p>
     <img src="https://img.shields.io/badge/iOS-14.0+-blue.svg" />
     <img src="https://img.shields.io/badge/Swift-5.3-red.svg" />
+      <img src="https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg" />
     <a href="https://twitter.com/cedricbahirwe">
         <img src="https://img.shields.io/badge/Contact-@cedricbahirwe-lightgrey.svg?style=flat" alt="Twitter: @cedricbahirwe" />
     </a>
@@ -26,7 +27,7 @@ You should create an instance of `AppLockView` with three parameters: the pin to
 Here's some example code to create an AppLock view that prints when the pin matched code.
 
 ```swift
-AppLockView(rightPin: "1975") { result  in
+AppLockView(pincode: .init("1975")) { result  in
     switch result {
     case .success(_):
         print("Match pin code")
@@ -65,7 +66,7 @@ struct AppLockExampleView: View {
 
     var appLockSheet : some View {
         AppLockView(
-            rightPin: "2021",
+            pincode: .init("2021"),
             completion: { result in
                 if case .success(_) = result {
                     self.matchedCode = true
