@@ -9,8 +9,8 @@ public struct AppLockView: View {
         case invalidPin = "Invalid PIN, the PIN may be betweed 4 to 6 digit"
     }
     public struct PinCode: Equatable {
-        init(_ value: String) { self.value = value }
-        init(_ value: Int) {  self.value = String(value)  }
+        public init(_ value: String) { self.value = value }
+        public init(_ value: Int) {  self.value = String(value)  }
         
         let value: String
         
