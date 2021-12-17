@@ -1,5 +1,7 @@
 # AppLock
-
+<p align="center" >
+  <img src="https://github.com/ABCIncs/AppLock/blob/main/logo.jpeg" title="AppLock logo" float=left>
+</p>
 
 <p>
     <img src="https://img.shields.io/badge/iOS-14.0+-blue.svg" />
