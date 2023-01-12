@@ -14,6 +14,8 @@
 
 AppLock is a simple SwiftUI framework that makes it easy to create a PinCode user interface. It provides a struct, `AppLockView`, that can be shown inside a view or a sheet for better user experience.
 
+ Natively, Apple only provides <b>Touch ID</b> and <b>Face ID</b> as authentication mechanisms and only brings <b>Passcode</b> when authentication with those ones have failed. The goal here was to provide a fully fledged Component that can be customized and reuse with ease.
+
 
 ## Usage
 
